@@ -1,0 +1,33 @@
+equipment
+=========
+dice_sides = 6
+number_of_dice = 6
+
+players
+=========
+min_players = 2
+score
+
+scoring
+=========
+3_1 = 1000 #three 1's
+3_6 = 600 #three 6's
+3_5 = 500 #three 5's
+3_4 = 400 #three 4's
+3_3 = 300 #three 3's
+3_2 = 200 #three 2's
+1_1 = 100 #one 1
+1_5 = 50 #one 5
+
+flow of play
+=========
+start with six dice
+player rolls
+player chooses score based on possible scoring
+remove dice which have been scored 
+  - if all are scoring, the player can roll all again
+player rolls until:
+  1) a zero point roll, resulting in  all points accumulated on the turn lost
+  2) player deciding to stop after a scored roll, points accumulated on turn are added to total 
+ *before a player can save points as accumulated, the player must have made 300 points in a turn
+If a player reaches 3000 or more points, each player gets a final round, and the winner is the player with the highest score.
