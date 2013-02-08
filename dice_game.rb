@@ -12,6 +12,24 @@ class Dice
   def get_state
     @state
   end
+  #Print the dice
+  def Dice.print_dice(side)
+    putting = false
+    IO.foreach('ascii_dice.txt') do |line|
+      if line == "</dice"+String(side)+">\n"
+        putting = false
+        puts "\n"
+      end
+      if putting == true
+        puts line
+      end
+      if line == "<dice"+String(side)+">\n"
+        putting = true
+        puts "\n"
+      end
+    end
+  end
+
 end
 
 class Player
@@ -118,8 +136,8 @@ class Gameflow
     @@dice.each {|x| x.roll_dice}
   end
   #Print the current roll
-  def Gameflow.print_dice_state
-    @@dice.each {|x| puts x.get_state}
+  def Gameflow.print_current_roll
+    @@dice.each {|x| Dice.print_dice(x.get_state)}
   end
   #Check to see if already running
   def Gameflow.is_running?
