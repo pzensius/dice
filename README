@@ -1,6 +1,1 @@
-This will progress from rules to function.
-
-Beginning with rules, written out by hand,
-Then how the functions can relate to those rules,
-To a single ruby file to run the rules,
-and finally a RoR app.
+This is a Dice game written in Ruby. See RULES for how its played usually.

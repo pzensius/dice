@@ -15,9 +15,17 @@ class Dice
 end
 
 class Player
+  #All the names that have players
+  @@names = []
   #Player has a score and a name
   def initialize(name)
-    @name = name
+    return false
+    if @@names.include?(name)
+      return false
+    else
+      @@names.push(name)
+      @name = name
+    end
     @score = Score.new
   end
   #Get this player's accumulated points
@@ -68,13 +76,11 @@ class Gameflow
   end
   #Add a new player to the game
   def Gameflow.add_player(name)
-    for x in @@players
-      if x.get_name == name
-        puts 'Name is already taken'
-        return false
-      end
+    begin
+      @@players.push(Player.new(name))
+    rescue
+      puts 'Please try again'
     end
-    @@players.push(Player.new(name))
   end
   #List all the players and their scores
   def Gameflow.list_players

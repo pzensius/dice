@@ -1,0 +1,10 @@
+Run the following to test:
+
+irb
+require 'dice_game.rb'
+Gameflow.add_player('Peter')
+Gameflow.add_player('John')
+Gameflow.set_turn(0)
+Gameflow.reset_dice
+Gameflow.roll_dice
+Gameflow.print_dice_state
