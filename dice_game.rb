@@ -15,17 +15,21 @@ class Dice
 end
 
 class Player
-  #All the names that have players
+  private_class_method :new
+  #All the names
   @@names = []
-  #Player has a score and a name
-  def initialize(name)
-    return false
+  #Check first if there are duplicate names
+  def Player.create(name)
     if @@names.include?(name)
       return false
     else
-      @@names.push(name)
-      @name = name
+      new(name)
     end
+  end
+  #Player has a score and a name
+  def initialize(name)
+    @@names.push(name)
+    @name = name
     @score = Score.new
   end
   #Get this player's accumulated points
@@ -60,6 +64,7 @@ end
 
 #Main functions for the game
 class Gameflow
+  private_class_method :new
   #The players in the game
   @@players = []
   #The one and only dice
