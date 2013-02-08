@@ -21,6 +21,7 @@ class Player
   #Check first if there are duplicate names
   def Player.create(name)
     if @@names.include?(name)
+      puts 'Duplicate name'
       return false
     else
       new(name)
@@ -81,9 +82,9 @@ class Gameflow
   end
   #Add a new player to the game
   def Gameflow.add_player(name)
-    begin
-      @@players.push(Player.new(name))
-    rescue
+    if player = Player.create(name)
+      @@players.push(player)
+    else
       puts 'Please try again'
     end
   end
