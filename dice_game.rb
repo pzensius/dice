@@ -76,21 +76,8 @@ class DiceList
 end
 
 class Player
-  private_class_method :new
-  #All the names
-  @@names = []
-  #Check first if there are duplicate names
-  def Player.create(name)
-    if @@names.include?(name)
-      puts 'Duplicate name'
-      return false
-    else
-      new(name)
-    end
-  end
   #Player has a score and a name
   def initialize(name)
-    @@names.push(name)
     @name = name
     @score = Score.new
   end
@@ -110,7 +97,34 @@ class Player
 end
 
 class PlayerList
+  private_class_method :new
+  #the PlayerList to be object
+  @@playerlist = nil
+  #Singleton pattern
+  def PlayerList.create
+    @@playerlist = new unless @@playerlist
+    @@playerlist
+  end
+  #PlayerList has the player array
   def initialize
+    @playerlist = []
+  end
+  #Access elements by index
+  def [](key)
+    if key.kind_of?(Integer)
+      @playerlist[key]
+    else
+      false
+    end
+  end
+  #Append one player to the player list, given a unique name
+  def append(name)
+    @playerlist.each do |x|
+      if x.get_name == name
+        return false
+      end
+    end
+    @playerlist.push(Player.new(name))
   end
 end
 
@@ -132,14 +146,13 @@ end
 #Main functions for the game
 class Gameflow
   private_class_method :new
-  #The players in the game
-  @@players = []
   #Max Dice constant
   MaxDice = 6
   #Sides per dice constant
   Sides = 6
-  #The one and only dice
+  #The single dice list
   @@dice = DiceList.create(MaxDice,Sides)
+  @@players = PlayerList.create
   #Whose turn it is
   @@turn = nil
   #Game is running
@@ -152,10 +165,11 @@ class Gameflow
   end
   #Add a new player to the game
   def Gameflow.add_player(name)
-    if player = Player.create(name)
-      @@players.push(player)
+    if @@players.append(name)
+      return true
     else
       puts 'Please try again'
+      return false
     end
   end
   #List all the players and their scores
