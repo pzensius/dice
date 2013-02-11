@@ -8,3 +8,17 @@ Gameflow.set_turn(0)
 Gameflow.reset_dice
 Gameflow.roll_dice
 Gameflow.print_current_roll
+
+Test randomness:
+
+irb
+require 'dice_game.rb'
+test_hash = {1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0}
+1.upto(100000) do |x|
+  Gameflow.reset_dice
+  Gameflow.roll_dice
+  Gameflow.dice.each do |x|
+    test_hash[x.get_state]+=1
+  end
+end
+test_hash
