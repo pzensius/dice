@@ -1,5 +1,5 @@
 class Dice
-  #Dice has number of sides
+  #Dice has number of sides and a roll state
   def initialize(sides)
     @sides = sides
     @state = nil
@@ -29,7 +29,50 @@ class Dice
       end
     end
   end
+end
 
+class DiceList
+  private_class_method :new
+  @@dicelist = nil
+  #Singleton pattern
+  def DiceList.create(dice,sides)
+    @@dicelist = new(dice,sides) unless @@dicelist
+    @@dicelist
+  end
+  #DiceList has max number of dice, sides per dice
+  #and the list of dice
+  def initialize(dice,sides)
+    @max_dice = dice
+    @sides = sides
+    @dicelist = []
+  end
+  #Access elements by index
+  def [](key)
+    if key.kind_of?(Integer)
+      @dicelist[key]
+    else
+      false
+    end
+  end
+  #Append one dice to the dice list
+  def append
+    @dicelist.push(Dice.new(@sides))
+  end
+  #Removes all elements and append up to max dice
+  def reset_max
+    @dicelist.clear
+    1.upto(@max_dice) do |x|
+      append
+    end
+  end
+  #Roll each dice.
+  def roll_dice
+    @dicelist.each {|x| x.roll_dice}
+  end
+  #Print each dice
+  def print_current_roll
+    @dicelist.each {|x| Dice.print_dice(x.get_state)}
+  end
 end
 
 class Player
@@ -66,6 +109,11 @@ class Player
   end
 end
 
+class PlayerList
+  def initialize
+  end
+end
+
 class Score
   #Score has points
   def initialize
@@ -86,8 +134,12 @@ class Gameflow
   private_class_method :new
   #The players in the game
   @@players = []
+  #Max Dice constant
+  MaxDice = 6
+  #Sides per dice constant
+  Sides = 6
   #The one and only dice
-  @@dice = []
+  @@dice = DiceList.create(MaxDice,Sides)
   #Whose turn it is
   @@turn = nil
   #Game is running
@@ -127,17 +179,15 @@ class Gameflow
   end
   #Reset all dice
   def Gameflow.reset_dice
-    @@dice = nil
-    @@dice = []
-    1.upto(6) {|x| @@dice.push(Dice.new(6))}
+    @@dice.reset_max
   end
   #Roll the dice
   def Gameflow.roll_dice
-    @@dice.each {|x| x.roll_dice}
+    @@dice.roll_dice
   end
   #Print the current roll
   def Gameflow.print_current_roll
-    @@dice.each {|x| Dice.print_dice(x.get_state)}
+    @@dice.print_current_roll
   end
   #Check to see if already running
   def Gameflow.is_running?
